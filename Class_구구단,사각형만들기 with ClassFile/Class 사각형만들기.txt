@@ -1,0 +1,72 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+#define LEASTNUM 1
+
+class CreateSquare
+{
+private:
+	int iWidth;
+	int iHeight;
+
+public:
+	void SetSize(int _iWidth, int _iHeight);
+	bool DrawSquare();
+};
+
+void main()
+{
+	CreateSquare CS;
+	int iWidth, iHeight;
+	bool ON = true;
+	while (ON)
+	{
+		cout << "가로의 수를 입력하세요 : ";
+		cin >> iWidth;
+		cout << " 세로의 수를 입력하세요 : ";
+		cin >> iHeight;
+		CS.SetSize(iWidth, iHeight);
+		ON = CS.DrawSquare();
+	}
+
+}
+
+void CreateSquare::SetSize(int _iWidth, int _iHeight)
+{
+	iWidth = _iWidth;
+	iHeight = _iHeight;
+}
+
+bool CreateSquare::DrawSquare()
+{
+	if (iWidth < LEASTNUM || iHeight < LEASTNUM)
+		cout << "가로 또는 세로가 1보다 작습니다.";
+	else
+	{
+		for (int i = 1; i <= iHeight; i++)  //세로
+		{
+			for (int j = 1; j <= iWidth; j++) //가로
+			{
+				if (i == 1 && j == 1)
+					cout << "┌";
+				else if (i == 1 && j == iWidth)
+					cout << "┐";
+				else if (i == iHeight && j == 1)
+					cout << "└";
+				else if (i == iHeight && j == iWidth)
+					cout << "┘";
+				else if (i == 1 || i == iHeight)
+					cout << "─";
+				else if (j == 1 || j == iWidth)
+					cout << "│";
+				else
+					cout << "  ";
+			}
+			cout << endl;
+		}
+		return false;
+	}
+	return true;
+}

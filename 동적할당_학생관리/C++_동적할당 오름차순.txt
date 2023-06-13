@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+#include<Windows.h>
+using namespace std;
+
+//퀵정렬
+#define NUMMAX 5
+
+void Printf(int* iNum)
+{
+	cout << "====================" << endl;
+	for (int i = 0; i < NUMMAX; i++)
+	{
+		cout << i + 1 << "번째 정수 : " << iNum[i] << endl;
+	}
+	cout << "====================" << endl;
+}
+
+void QuickSort(int* iNum, int left, int right)
+{
+	int iPivot = right;
+	int i = left;
+	int j = right - 1;
+	if (left >= right)
+		return;
+	while (i <= j)
+	{
+		while (i < right && iNum[i] <= iNum[iPivot])
+		{
+			i++;
+		}
+		while (j >= left && iNum[j] >= iNum[iPivot])
+		{
+			j--;
+		}
+
+		if (i > j)
+		{
+			int tmp = iNum[i];
+			iNum[i] = iNum[iPivot];
+			iNum[iPivot] = tmp;
+		}
+		else
+		{
+			int tmp = iNum[i];
+			iNum[i] = iNum[j];
+			iNum[j] = tmp;
+		}
+	}
+	QuickSort(iNum, left, i - 1);
+	QuickSort(iNum, i + 1, right);
+
+}
+
+void main()
+{
+	int NumCount = 0;
+	int* iNum;
+
+	cout << "5개의 정수를 입력해주세요" << endl;
+	iNum = new int[NUMMAX];
+	for (int i = 0; i < NUMMAX; i++)
+	{
+		cout << i + 1 << "번째 정수 : ";
+		cin >> iNum[i];
+	}
+	cout << "오름차순 정렬전" << endl;
+	Printf(iNum);
+
+	QuickSort(iNum, 0, NUMMAX - 1);
+
+	cout << "오름차순 정렬후" << endl;
+	Printf(iNum);
+
+	system("pause");
+	
+	delete [] iNum;
+	cout  << "동적할당 해제" << endl;
+	
+
+
+}
+
+

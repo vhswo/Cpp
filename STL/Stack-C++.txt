@@ -1,0 +1,58 @@
+//C++ STL Container
+#include<stack>
+#include<stdio.h>
+#include<Windows.h>
+
+int OutputMainSet()
+{
+	system("cls");
+	int iMenu;
+	printf("===Stack System===\n");
+	printf("1. Push\n");
+	printf("2. Pop\n");
+	printf("3. Exit\n");
+	printf("===============\n");
+	printf("입력 : ");
+	scanf("%d", &iMenu);
+
+	return iMenu;
+}
+
+void main()
+{
+	std:: stack<int> iStack;
+	
+
+	while(1)
+	{
+		switch (OutputMainSet())
+		{
+		case 1:
+			int iData;
+			printf("데이터 입력 : ");
+			scanf("%d", &iData);
+			iStack.push(iData);
+			system("pause");
+			break;
+		case 2:
+			if(!iStack.empty())
+			{
+				printf("Pop : %d", iStack.top());
+				iStack.pop();
+			}
+			system("pause");
+			break;
+		case 3:
+			while (!iStack.empty())
+			{
+				printf("Top : %d\n", iStack.top());
+				iStack.pop();
+			}
+			system("pause");
+			return;
+
+		}
+	}
+
+
+}

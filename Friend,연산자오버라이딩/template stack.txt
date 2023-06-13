@@ -1,0 +1,23 @@
+#include<iostream>
+using namespace std;
+
+template<typename T>
+class STACK
+{
+private :
+	T* top; int size;
+public:
+	STACK(int s) { size = s; top = new T[size]; }
+	void push(T a) { *top = a; top++; }
+	void pop() { cout << *--top << endl; }
+	// 2번째줄에서는 포인트 없는 top 을 ++ 하는데 3번째 줄은 포인터가 있는 top을 -- 차이점
+};
+
+void main()
+{
+	STACK<float> stack(3);
+	stack.push(2.2f);
+	stack.push(1.1f);
+	stack.pop();
+	stack.pop();
+}

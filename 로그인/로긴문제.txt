@@ -1,0 +1,278 @@
+#include <iostream>
+#include <string>
+#include <list>
+#include <Windows.h>
+using namespace std;
+
+#define EMPLOYEEMAX 9
+#define IDCHECK 1
+#define PASSWORDCHECK 2
+#define LEASTID 3
+#define LEASTPASS 8
+
+typedef struct employee
+{
+	string ID;
+	string password;
+	string name;
+	int iAge;
+	string phoneNumber;
+	int iMileage;
+};
+int MainMenu(int iEmployeeCount);
+bool StrCheck(list<employee> list, string str, int IDOrPass);
+bool CheckEng(string str);
+int OutputLoginMain();
+
+int MainMenu(int iEmployeeCount)
+{
+	int iInput;
+	system("cls");
+	cout << "=====Login=====(회원수[" << iEmployeeCount << "])" << endl;
+	cout << "1. 회원가입" << endl;
+	cout << "2. 로그인" << endl;
+	cout << "3. 종료" << endl;
+	cout << " 입력 : ";
+	cin >> iInput;
+	return iInput;
+}
+
+
+
+employee CreatEmployee(list<employee> list)
+{
+	employee New;
+	string CheckPass;
+	bool iIDOnOff = true;
+	bool iPassOnOff = true;
+	while (iIDOnOff)
+	{
+		cout << "ID 입력([3글자 ↑] AND [한글 X]  : ";
+		cin >> New.ID;
+		iIDOnOff = StrCheck(list, New.ID, IDCHECK);
+	}
+	while (iPassOnOff)
+	{
+		cout << "비밀번호를 입력해주세요(숫자와 영문 필수) : " << endl;
+		cin >> New.password;
+		cout << "비밀번호 확인 : ";
+		cin >> CheckPass;
+		if (New.password != CheckPass)
+			cout << "비밀번호가 맞지 않습니다.";
+		else
+			iPassOnOff = StrCheck(list, New.password, PASSWORDCHECK);
+	}
+	cout << "닉네임 입력 :";
+	cin >> New.name;
+	cout << "나이 입력 :";
+	cin >> New.iAge;
+	cout << "휴대폰 번호 입력 :";
+	cin >> New.phoneNumber;
+	cout << "회원가입 성공 !!" << endl;
+	New.iMileage = 1000;
+	cout << "마일리지 " << New.iMileage << "원 등록";
+
+	system("pause");
+	return New;
+}
+
+bool StrCheck(list<employee> list, string str, int IDOrPass)
+{
+	int count = 0;
+	if (CheckEng(str) != true)
+	{
+		cout << "영문이나 숫자가 아닙니다." << endl;
+		count++;
+	}
+	if (IDOrPass == IDCHECK)
+	{
+		for (std::list<employee>::iterator Iter = list.begin(); Iter != list.end(); Iter++)
+		{
+			if ((str == Iter->ID))
+			{
+				cout << "이미 있는 아이디 입니다." << endl;
+				count++;
+			}
+		}
+		if (str.length() < LEASTID)
+		{
+			cout << "ID가 세글자 이하 입니다." << endl;
+			count++;
+		}
+	}
+	if (IDOrPass == PASSWORDCHECK)
+	{
+		int checkcount = 0;
+		for (int i = 0; i < str.length(); i++)
+		{
+			if (str[i] >= '0' && str[i] <= '9')
+				checkcount++;
+		}
+		if (checkcount == 0)
+		{
+			cout << "숫자가 포함되지 않았습니다." << endl;
+			count++;
+		}
+		if (str.length() < LEASTPASS)
+		{
+			cout << "비밀번호가 여덟글자 이하 입니다." << endl;
+			count++;
+		}
+	}
+	if (count == 0)
+		return false;
+	else
+		return true;
+}
+bool CheckEng(string str)
+{
+	for (int i = 0; i < str.length();)
+	{
+		if ((str[i] >= 'A' && str[i] <= 'Z') ||
+			(str[i] >= 'a' && str[i] <= 'z') ||
+			(str[i] >= '0' && str[i] <= '9'))
+			i++;
+		else
+			return false;
+	}
+	return true;
+}
+
+void Mypage(list<employee>::iterator Iter)
+{
+	system("cls");
+	cout << "==========회원정보==========" << endl;
+	cout << "ID : " << Iter->ID << "\t닉네임 : " << Iter->name << endl;
+	cout << "나이 : " << Iter->iAge << "\t휴대폰 번호 : " << Iter->phoneNumber << endl;
+	cout << "마일리지 : " << Iter->iMileage << endl;
+
+}
+
+int OutputModify()
+{
+	int iInput;
+	cout << "=================" << endl;
+	cout << "1.닉네임 변경" << endl;
+	cout << "2.나이 변경" << endl;
+	cout << "3.휴대폰 번호 변경" << endl;
+	cout << "4.돌아가기" << endl;
+	cout << "입력 : ";
+	cin >> iInput;
+	return iInput;
+}
+
+void Modify(list<employee>::iterator* Iter)
+{
+	while (1)
+	{
+		system("cls");
+		Mypage((*Iter));
+		switch (OutputModify())
+		{
+		case 1:
+			cout << "현재 닉네임 : " << (*Iter)->name << endl;
+			cout << " 변경할 닉네임 입력 : ";
+			cin >> (*Iter)->name;
+			break;
+		case 2:
+			cout << "현재 나이 : " << (*Iter)->iAge << endl;
+			cout << " 변경할 나이 입력 : ";
+			cin >> (*Iter)->iAge;
+			break;
+		case 3:
+			cout << "현재 휴대폰 번호 : " << (*Iter)->phoneNumber << endl;
+			cout << " 변경할 휴대폰 번호 입력 : ";
+			cin >> (*Iter)->phoneNumber;
+			break;
+		case 4:
+			return;
+		}
+	}
+}
+
+void LoginMain(list<employee>::iterator Iter)
+{
+	while (1)
+	{
+		switch (OutputLoginMain())
+		{
+		case 1:
+			Mypage(Iter);
+			system("pause");
+			break;
+		case 2:
+			Modify(&Iter);
+			break;
+		case 3:
+			return;
+		}
+	}
+}
+
+int OutputLoginMain()
+{
+	int iInput;
+	system("cls");
+	cout << "======Menu======" << endl;
+	cout << "1.회원 정보" << endl;
+	cout << "2.회원 정보 변경" << endl;
+	cout << "3.로그아웃" << endl;
+	cin >> iInput;
+	return iInput;
+}
+
+void Login(list<employee>* EmployeeList)
+{
+	string name, password;
+	bool OnOff = true;
+	while (OnOff)
+	{
+		cout << "아이디 입력 : ";
+		cin >> name;
+		cout << "패스워드 입력 : ";
+		cin >> password;
+		for (list<employee>::iterator Iter = EmployeeList->begin(); Iter != EmployeeList->end(); Iter++)
+		{
+			if (name == Iter->ID)
+			{
+				if (password == Iter->password)
+				{
+					LoginMain(Iter);
+					OnOff = false;
+				}
+				else
+					cout << "없는 ID 이거나 잘못된 비밀번호 입니다." << endl;
+				break;
+			}
+			else
+				cout << "없는 ID 이거나 잘못된 비밀번호 입니다." << endl;
+		}
+		system("pause");
+		break;
+	}
+}
+
+void main()
+{
+	list<employee> EmployeeList;
+
+	while (1)
+	{
+		switch (MainMenu(EmployeeList.size()))
+		{
+		case 1:
+			if (EmployeeList.size() > EMPLOYEEMAX)
+				cout << "회원수가 다 찼습니다.";
+			else
+				EmployeeList.push_back(CreatEmployee(EmployeeList));
+			break;
+		case 2:
+			Login(&EmployeeList);
+			break;
+		case 3:
+			return;
+		}
+	}
+
+	return;
+}

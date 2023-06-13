@@ -1,0 +1,50 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class Sum
+{
+private:
+	int m_iLeastNum;
+	int m_iLastNum;
+public:
+	Sum()
+	{
+		m_iLeastNum = 1;
+		m_iLastNum = 10;
+		cout << "1 ~ 10 까지의 합계 : " << AllNumberSum(m_iLeastNum, m_iLastNum) << endl;
+	}
+	Sum(int LastNum)
+	{
+		m_iLeastNum = 1;
+		m_iLastNum = LastNum;
+		cout << "1 ~ "<< m_iLastNum <<"까지의 합계 : " << AllNumberSum(m_iLeastNum, m_iLastNum) << endl;
+	}
+	Sum(int SmallNum, int BigNum)
+	{
+		
+		int itmp;
+		if (SmallNum > BigNum)
+		{
+			itmp = BigNum;
+			BigNum = SmallNum;
+			SmallNum = itmp;
+		}
+		m_iLeastNum = SmallNum;
+		m_iLastNum = BigNum;
+		cout << m_iLeastNum <<" ~ " << m_iLastNum << "까지의 합계 : " << AllNumberSum(m_iLeastNum, m_iLastNum) << endl;
+	}
+	int AllNumberSum(int iLest,int iLast)
+	{
+		int iSum = 0;
+		for (int i = iLest; i <= iLast; i++)
+			iSum += i;
+		return iSum;
+	}
+
+
+};
+
+void main()
+{
+	Sum S1,S2(100),S3(50,23);
+}

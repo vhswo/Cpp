@@ -1,0 +1,89 @@
+#include<list>
+#include<vector>
+#include<map>
+#include<stdio.h>
+
+// list
+//장점 : 데이터의 저장삭제가 빠르다
+//단점 : 데이터의 검색속도가 느리다.
+// 
+//vector
+//장점 : 데이터의 검색속도가 빠르다.
+//단점 : 데이터의 저장삭제가 느리다.
+
+void PrintList(std::list<int> iList)
+{
+	for (std::list<int>::iterator iter = iList.begin(); iter != iList.end(); iter++)
+		printf("%d\n", *iter);
+}
+
+std::list<int>::iterator Search(std::list<int>* iList, int Data)
+{
+	for (std::list<int>::iterator iter = iList->begin(); iter != iList->end(); iter++)
+	{
+		if (*iter == Data)
+			return iter;
+	}
+	return iList->end();
+}
+
+void SearchData(std::list<int> iList,int Data)
+{
+	std::list<int>::iterator FindIter = Search(&iList, Data);
+	if(FindIter != iList.end())
+		printf("%d 데이터를 찾았습니다.\n", Data);
+	else
+		printf("%d 데이터를 찾지 못했습니다.", Data);
+}
+
+void AddData(std::list<int>* iList, int Data, int FindData)
+{
+	std::list<int>::iterator FindIter = Search(iList, FindData);
+	if (FindIter != iList->end())
+		iList->insert(FindIter, Data);
+	else
+		printf("%d 데이터를 찾지 못했습니다.", Data);
+}
+
+void DeleteData(std::list<int>* iList, int Data)
+{
+	std::list<int>::iterator FindIter = Search(iList, Data);
+	if (FindIter != iList->end())
+		iList->erase(FindIter);
+	else
+		printf("%d 데이터를 찾지 못했습니다.", Data);
+}
+
+
+void main()
+{
+	std::list<int> iList;
+	std::vector<int> iVector;
+	std::vector<int> iMap;
+
+	for (int i = 1; i <= 10; i++)
+		iList.push_back(i);
+	
+	iList.push_front(11);
+	
+	SearchData(iList, 5);
+	SearchData(iList, 25);
+	AddData(&iList, 25, 5);
+	
+
+	iList.pop_back();
+	iList.pop_front();
+
+	DeleteData(&iList,25);
+
+	PrintList(iList);
+
+	/*
+	iList.clear(); //전체삭제
+	iList.remove(3);
+
+	iList.sort(); // 오름차순
+	iList.reverse(); // 역순정렬
+	*/
+
+}

@@ -1,0 +1,20 @@
+#include<iostream>
+using namespace std;
+
+class Division
+{
+private:
+	int div;
+public:
+	Division(int n1) { div = n1; }
+	int GetDiv() { return div; }
+	Division operator/(Division n) { n.div = this->div / n.div; return  n; }
+};
+
+void main()
+{
+	Division co1(5), co2(10);
+	cout << co1.GetDiv();
+	co1 = co2 / co1;
+	cout << co1.GetDiv();
+}

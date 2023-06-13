@@ -1,0 +1,197 @@
+#include<stdio.h>
+#include<list>
+#include<vector>
+#include<map>
+#include<string>
+#include<Windows.h>
+
+
+#define NAME_SIZE 32
+#define ADDR_SIZE 128
+#define ID_MAX 32
+
+typedef struct node
+{
+	char name[NAME_SIZE];
+	int age;
+	char address[ADDR_SIZE];
+	int Kor, Eng, Math, Sum;
+	float Float;
+	char Level;
+
+}node;
+
+int Menu()
+{
+	int iInput;
+	system("cls");
+	printf("<<<==== 메뉴 ====>>>>\n\n");
+	printf("1.학생 등록\n");
+	printf("2.학생 검색\n");
+	printf("3.학생 목록\n");
+	printf("4.학생 수정\n");
+	printf("5.학생 삭제\n");
+	printf("6.종료\n");
+	printf("입력 : ");
+
+	scanf("%d", &iInput);
+
+	return iInput;
+}
+
+void SetLevel(node* st)
+{
+	st->Sum = (st->Eng) + (st->Kor) + (st->Math);
+	st->Float = st->Sum / 3;
+	if (st->Float > 90)
+		st->Level = 'A';
+	else if (st->Float > 80)
+		st->Level = 'B';
+	else if (st->Float > 70)
+		st->Level = 'C';
+	else if (st->Float > 60)
+		st->Level = 'D';
+	else
+		st->Level = 'F';
+}
+
+node Insert()
+{
+	node st;
+	printf("학생 이름 입력 : ");
+	scanf("%s", st.name);
+	printf("%s 학생 나이 입력 : ", st.name);
+	scanf("%d", &st.age);
+	printf("%s 학생 주소 입력 : ", st.name);
+	scanf("%s", st.address);
+	printf("%s 학생 국어 입력 : ", st.name);
+	scanf("%d", &st.Kor);
+	printf("%s 학생  영어 입력 : ", st.name);
+	scanf("%d", &st.Eng);
+	printf("%s 학생 수학 입력 : ", st.name);
+	scanf("%d", &st.Math);
+	SetLevel(&st);
+	return st;
+}
+
+void Printf(std::map<int, node>::iterator stPrintf)
+{
+	printf("학생 키값 : %d\n", stPrintf->first);
+	printf("학생 이름 : %s\n", stPrintf->second.name);
+	printf("학생 나이 : %d\n", stPrintf->second.age);
+	printf("학생 주소 : %s\n", stPrintf->second.address);
+	printf("영어 점수 : %d\n", stPrintf->second.Eng);
+	printf("국어 점수 : %d\n", stPrintf->second.Kor);
+	printf("수학 점수 : %d\n", stPrintf->second.Math);
+	printf("합계 점수 : %d\n", stPrintf->second.Sum);
+	printf("평균 점수 : %.2f\n", stPrintf->second.Float);
+	printf("등급 : %c\n", stPrintf->second.Level);
+}
+
+void SearchSt(std::map<int, node> Student)
+{
+	int cID;
+	printf("찾을 학생의 키값: ");
+	scanf("%d", &cID);
+	if (Student.find(cID) == Student.end())
+		printf("찾는 학생이 없습니다.");
+	else
+		Printf(Student.find(cID));
+	system("pause");
+}
+
+void Modify(std::map<int, node>* nMap)
+{
+	int cID;
+	int iMenu;
+	printf("수정할 학생의 키값 : ");
+	scanf("%d", &cID);
+	
+	while ((*nMap).find(cID) != (*nMap).end())
+	{
+		system("cls");
+		Printf((*nMap).find(cID));
+		printf("무엇을 수정하시겠습니까?\n");
+		printf("1.이름\t2.나이\t3.주소\t4.성적\t5.종료");
+		scanf("%d", &iMenu);
+		switch (iMenu)
+		{
+		case 1:
+			printf("현재 이름 : %s\n", (*nMap)[cID].name);
+			printf("변경할 이름 : ");
+			scanf("%s", (*nMap)[cID].name);
+			break;
+		case 2:
+			printf("현재 나이 : %d\n", (*nMap)[cID].age);
+			printf("변경할 나이 : ");
+			scanf("%d", &(*nMap)[cID].age);
+			break;
+		case 3:
+			printf("현재 주소 : %s\n", (*nMap)[cID].address);
+			printf("변경할 주소 : ");
+			scanf("%s", (*nMap)[cID].address);
+			break;
+		case 4:
+			printf("현재 점수\n국어 : %d\t영어 : %d\t수학 : %d\n", (*nMap)[cID].Kor, (*nMap)[cID].Eng, (*nMap)[cID].Math);
+			printf("변경할 국어 점수 : ");
+			scanf("%d", &(*nMap)[cID].Kor);
+			printf("변경할 영어 점수 : ");
+			scanf("%d", &(*nMap)[cID].Eng);
+			printf("변경할 수학 점수 : ");
+			scanf("%d", &(*nMap)[cID].Math);
+			break;
+		case 5:
+			return;
+		}
+	}
+}
+
+void Delete(std::map<int, node>* Student)
+{
+	int cID;
+	printf("삭제할 학생 키값 : ");
+	scanf("%s", &cID);
+	if (Student->find(cID) != Student->end())
+		Student->erase(cID);
+	else
+		printf("학생을 찾지 못했습니다.");
+}
+
+void main()
+{
+	std::map<int, node> Student;
+	
+	int iKey = 220100;
+	while (1)
+	{
+		switch (Menu())
+		{
+		case 1:
+			if (Student.find(iKey) == Student.end())
+				Student[iKey++] = Insert();
+			else
+				printf("이미 있는 ID 입니다.");
+			break;
+		case 2:
+			SearchSt(Student);
+			break;
+		case 3:
+			for (std::map<int, node>::iterator Iter = Student.begin(); Iter != Student.end(); Iter++)
+			{
+				Printf(Iter);
+			}
+			system("pause");
+			break;
+
+		case 4:
+			Modify(&Student);
+			break;
+
+		case 5:
+			Delete(&Student);
+			break;
+		case 6:
+			return;
+		}
+	}
+}

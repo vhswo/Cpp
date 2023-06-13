@@ -1,0 +1,39 @@
+#include<iostream>
+using namespace std;
+
+template<typename val>
+int funcPlus(val v)
+{
+	return v + 1;
+}
+
+template<typename val>
+int LowNumber(val n1, val n2)
+{
+	if (n1 > n2)
+		return n2;
+	else
+		return n1;
+}
+
+template<typename val>
+int HighNumber(val n1, val n2, val n3)
+{
+	if (n1 > n2 && n1 > n3)
+		return n1;
+	else if (n2 > n1 && n2 > n3)
+		return n2;
+	else
+		return n3;
+}
+
+
+void main()
+{
+	cout << funcPlus<int>(10) << endl;
+	cout << LowNumber<int>(10,1) << endl;
+	cout << LowNumber<int>(6, 5) << endl;
+	cout << HighNumber<int>(0x10,15,14) << endl;
+	cout << HighNumber<int>('a','b','c') << endl;
+	cout << HighNumber<int>(10,13,12) << endl;
+}

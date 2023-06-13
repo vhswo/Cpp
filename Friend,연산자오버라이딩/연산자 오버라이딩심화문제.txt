@@ -1,0 +1,55 @@
+#include<iostream>
+using namespace std;
+
+
+class Time
+{
+private:
+	int m_iHour, m_iMinute,m_iDay;
+public:
+	Time() { m_iHour = 0, m_iMinute = 0, m_iDay = 0; };
+	Time(int Hour, int Min, int Day) { m_iHour = Hour; m_iMinute = Min; m_iDay = Day; };
+	Time operator + (Time tmp) { tmp.m_iHour += this->m_iHour; tmp.m_iMinute += this->m_iMinute; tmp.m_iDay = ++this->m_iDay; return tmp; }
+	int Draw(Time t);
+	void Add(Time& t2)
+	{
+		cout << "시 입력 : ";
+		cin >> t2.m_iHour;
+		cout << "분 입력 : ";
+		cin >> t2.m_iMinute;
+	}
+	~Time() {};
+};
+
+
+int Time::Draw(Time t)
+{
+	int iInput;
+	system("cls");
+	cout << "총 공부 시간 : " << t.m_iHour << " : " << t.m_iMinute << endl;
+	cout << "=====공부 시간 관리 프로그램(" << t.m_iDay << "Day)=====" << endl;
+	cout << "\t\t1. 시간 등록" << endl;
+	cout << "\t\t2. 종료" << endl;
+	cout << "\t\t입력 : ";
+	cin >> iInput;
+	return iInput;
+}
+
+void main()
+{
+	Time t1(0, 0,1),t2;
+	while(1)
+	{
+		switch(t1.Draw(t1))
+		{
+		case 1:
+			t2.Add(t2);
+			t1 = t1 + t2;
+			break;
+		case 2:
+			return;
+		default:
+			break;
+		}
+	}
+}

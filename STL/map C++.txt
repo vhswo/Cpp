@@ -1,0 +1,68 @@
+#include<map>
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<string>
+typedef struct Student
+{
+	char Name[10];
+	int age;
+	int Class;
+};
+
+char* CreateNum()
+{
+	switch (rand() % 5)
+	{
+	case 0:
+		return (char*)"채상우";
+	case 1:
+		return (char*)"노노";
+	case 2:
+		return (char*)"주조";
+	case 3:
+		return (char*)"지아";
+	case 4:
+		return (char*)"상채";
+	default:
+		return (char*)"상추";
+	}
+}
+
+Student CreateStudent()
+{
+	Student student;
+	strcpy(student.Name, CreateNum());
+	student.age = rand() % 4 + 20;
+	student.Class = rand() % 4 + 1;
+	return student;
+}
+
+void PrintfStudentMap(std::map<int, Student> iStudent)
+{
+	for (std::map<int, Student>::iterator Iter = iStudent.begin(); Iter != iStudent.end(); Iter++)
+	{
+		printf("key : %d\t,이름 : %s\t나이 : %d\t학번 : %d\n", Iter->first, Iter->second.Name, Iter->second.age, Iter->second.Class);
+	}
+	printf("================================================\n");
+}
+
+void main()
+{
+	int StudentNum = 20220104;
+	std::map<int, Student> StudentMap;
+	for(int i =1; i <= 10; i++)
+		StudentMap[StudentNum++] = CreateStudent();
+
+	PrintfStudentMap(StudentMap);
+
+	StudentMap.insert(std::make_pair(StudentNum++, CreateStudent()));
+	PrintfStudentMap(StudentMap);
+
+//	StudentMap[20220104] = CreateStudent();  수정
+	StudentMap.insert(std::make_pair(20220104, CreateStudent())); // 아예 변경 안함
+	
+
+	StudentMap.erase(20220104);
+	PrintfStudentMap(StudentMap);
+}

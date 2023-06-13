@@ -1,0 +1,76 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+enum GUGUDAN
+{
+	GUGUDAN_START = 2,
+	GUGUDAN_TWO = 2,
+	GUGUDAN_THERR,
+	GUGUDAN_FORE,
+	GUGUDAN_FIVE,
+	GUGUDAN_SIX,
+	GUGUDAN_SEVEN,
+	GUGUDAN_EIGHT,
+	GUGUDAN_NINE,
+	GUGUDAN_EXIT
+};
+
+class Gugudan
+{
+private:
+	int iStartNum, iEndNum;
+
+public:
+	void SetNum(int _iStartNum, int _iEndNum);
+	bool OutputGugudan();
+};
+
+void main()
+{
+	int iStartNum, iEndNum;
+	bool On = true;
+	Gugudan Gu;
+	while (On)
+	{
+		cout << "시작 단 입력 : ";
+		cin >> iStartNum;
+		cout << "끝 단 입력 : ";
+		cin >> iEndNum;
+		Gu.SetNum(iStartNum, iEndNum);
+		On = Gu.OutputGugudan();
+	}
+}
+
+void Gugudan::SetNum(int _iStartNum, int _iEndNum)
+{
+	iStartNum = _iStartNum;
+	iEndNum = _iEndNum;
+}
+
+bool Gugudan::OutputGugudan()
+{
+	if (iStartNum < GUGUDAN_START || iStartNum >= GUGUDAN_EXIT)
+		cout << "시작단이 2보다 작거나 9보다 큽니다.";
+	else if (iEndNum < iStartNum)
+		cout << "끝단이 시작단 보다 작습니다.";
+	else if (iEndNum < GUGUDAN_START || iEndNum >= GUGUDAN_EXIT)
+		cout << "끝단이 2보다 작거나 9보다 큽니다.";
+	else
+	{
+		for (int i = GUGUDAN_START - 1; i < GUGUDAN_EXIT; i++)
+		{
+			for (int j = iStartNum; j <= iEndNum; j++)
+			{
+				if (i == GUGUDAN_START - 1)
+					cout << "===== " << j << "단 =====" << "\t";
+				else
+					cout << j << " x " << i << " = " << i * j << "\t";
+			}
+			cout << endl;
+		}
+		return false;
+	}
+	return true;
+}

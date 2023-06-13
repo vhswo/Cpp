@@ -1,0 +1,56 @@
+#include<queue>
+#include<stdio.h>
+
+int OutputMenu()
+{
+	system("cls");
+	int Iinput;
+	printf("=====Queue System=====\n");
+	printf("1. Enqueue\n");
+	printf("2. Dequeue\n");
+	printf("3. Exit\n");
+	printf("======================\n");
+	printf("입력 : ");
+	scanf("%d", &Iinput);
+
+	return Iinput;
+}
+
+void main()
+{
+	std::queue<int> iQueue;
+	
+	while (1)
+	{
+		switch (OutputMenu())
+		{
+		case 1: 
+			int iData;
+			printf("데이타 입력 : ");
+			scanf("%d", &iData);
+			iQueue.push(iData);
+			printf("Front : %d\t Rear : %d\n", iQueue.front(), iQueue.back());
+			system("pause");
+			break;
+		case 2: 
+			if (!iQueue.empty())
+			{
+				printf("Front : %d\t Rear : %d\n", iQueue.front(), iQueue.back());
+				iQueue.pop();
+				system("pause");
+			}
+			break;
+		case 3:
+			while (!iQueue.empty())
+			{
+				printf("Front : %d\t Rear : %d\n", iQueue.front(), iQueue.back());
+				iQueue.pop();
+			}
+			return;
+		}
+	}
+
+
+
+
+}

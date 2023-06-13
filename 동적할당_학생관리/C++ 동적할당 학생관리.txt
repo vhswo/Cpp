@@ -1,0 +1,187 @@
+#include <iostream>
+#include <string>
+#include<Windows.h>
+using namespace std;
+
+#define STUDENTMAX 10
+
+typedef struct student
+{
+	string sName;
+	int iAge;
+	int iClass;
+	int iNumber = 0;
+	int iKor, iEng, iMath, iSum;
+	float fAvg;
+	char Level;
+}student;
+
+int OutputMenu(int StudentCount)
+{
+	int iInput;
+	system("cls");
+	cout << "===학생정보관리===(학생수 : " << StudentCount << "명)" << endl;
+	cout << "   1.학생등록" << endl;
+	cout << "   2.학생정보 보기" << endl;
+	cout << "   3.학생 검색" << endl;
+	cout << "   4.등급별 보기" << endl;
+	cout << "   5.학년별 보기" << endl;
+	cout << "   6.종료" << endl;
+	cout << " 입력 : " << endl;
+	cin >> iInput;
+
+	return iInput;
+}
+char Level(float fAvg);
+int CreateStudent(student* iStudent, int StudentNumber)
+{
+	system("cls");
+	iStudent->iNumber = ++StudentNumber;
+	cout << "===== " << iStudent->iNumber << "번째 학생=====" << endl;
+	cout << "학생 이름 : ";
+	cin >> iStudent->sName;
+	cout << "학생 나이 : ";
+	cin >> iStudent->iAge;
+	while (1)
+	{
+		cout << "학생 학번(1~3) : ";
+		cin >> iStudent->iClass;
+		if (iStudent->iClass > 3 || iStudent->iClass < 0)
+			cout << "1 ~ 3 만 입력 가능합니다." << endl;
+		else
+			break;
+	}
+	cout << "국어 점수 : ";
+	cin >> iStudent->iKor;
+	cout << "영어 점수 : ";
+	cin >> iStudent->iEng;
+	cout << "수학 점수 : ";
+	cin >> iStudent->iMath;
+	iStudent->iSum = iStudent->iKor + iStudent->iEng + iStudent->iMath;
+	iStudent->fAvg = iStudent->iSum / 3;
+	iStudent->Level = Level(iStudent->fAvg);
+	return StudentNumber;
+}
+
+char Level(float fAvg)
+{
+	if (fAvg <= 100 && fAvg >= 90)
+		return 'A';
+	else if (fAvg >= 80 && fAvg < 90)
+		return 'B';
+	else if (fAvg >= 70 && fAvg < 80)
+		return 'C';
+	else if (fAvg >= 60 && fAvg < 70)
+		return 'D';
+	else
+		return 'F';
+}
+
+void StudentList(student* iStudent)
+{
+	cout << "===== " << iStudent->iNumber << "번째 학생" << " =====" << endl;
+	cout << "학생 이름 : " << iStudent->sName << endl;
+	cout << "학생 나이 : " << iStudent->iAge << endl;
+	cout << "학생 학년 : " << iStudent->iClass << endl;
+	cout << "국어 점수 : " << iStudent->iKor << endl;
+	cout << "영어 점수 : " << iStudent->iEng << endl;
+	cout << "수학 점수 : " << iStudent->iMath << endl;
+	cout << "합점 점수: " << iStudent->iSum << endl;
+	cout << "평균 점수: " << iStudent->fAvg << endl;
+	cout << "등급 : " << iStudent->Level << endl;
+	cout << "=================" << endl << endl;
+}
+
+void Search(student* iStudent[STUDENTMAX], int StudentCount)
+{
+	string name;
+	cout << "이름 입력 : ";
+	cin >> name;
+
+	for (int i = 0; i < StudentCount; i++)
+	{
+		if (iStudent[i]->sName == name)
+			StudentList(iStudent[i]);
+	}
+
+	cout << "찾는 학생이 없습니다." << endl;
+	system("pause");
+}
+
+void PrintfLevel(student* iStudent[STUDENTMAX], int StudentCount, char Level)
+{
+	cout << "=============== "<<Level<<"등급 ============== = " << endl;
+	for (int i = 0; i < StudentCount; i++)
+	{
+		if (iStudent[i]->Level == Level)
+			StudentList(iStudent[i]);
+	}
+	cout << "====================================" << endl << endl;
+}
+
+void LevelSortArr(student* iStudent[STUDENTMAX], int StudentCount)
+{
+	for(char ch= 'A'; ch < 'F'; ch++)
+	{
+		if (ch == 'E')
+			ch++;
+		PrintfLevel(iStudent, StudentCount, ch);
+	}
+	system("pause");
+}
+
+void PrintfClass(student* iStudent[STUDENTMAX], int StudentCount, int Class)
+{
+	cout << "=============== "<< Class <<"학년 ============== = " << endl;
+	for (int i = 0; i < StudentCount; i++)
+	{
+		if (iStudent[i]->iClass == Class)
+			StudentList(iStudent[i]);
+	}
+	cout << "====================================" << endl << endl;
+}
+
+void ClassSortArr(student* iStudent[STUDENTMAX], int StudentCount)
+{
+	for(int i =1; i <=3; i++)
+		PrintfClass(iStudent, StudentCount, i);
+	system("pause");
+}
+
+void main()
+{
+	int StudentCount = 0;
+	student* iStudent[STUDENTMAX];
+
+	while (1)
+	{
+		system("cls");
+		switch (OutputMenu(StudentCount))
+		{
+		case 1: // 생성 및 저장
+			iStudent[StudentCount] = new student;
+			StudentCount = CreateStudent(iStudent[StudentCount], StudentCount);
+			break;
+		case 2: // 출력
+			for (int i = 0; i < StudentCount; i++)
+				StudentList(iStudent[i]);
+			system("pause");
+			break;
+		case 3:
+			Search(iStudent, StudentCount);
+			break;
+		case 4: // 등급별
+			LevelSortArr(iStudent, StudentCount);
+			break;
+		case 5: // 학년별
+			ClassSortArr(iStudent, StudentCount);
+			break;
+		case 6: // 삭제 동적할당해제
+			for (int i = 0; i < StudentCount; i++)
+				delete iStudent[i];
+			return;
+		}
+	}
+}
+
+

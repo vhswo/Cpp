@@ -1,0 +1,35 @@
+#include<iostream>
+using namespace std;
+
+class Time
+{
+private:
+	int m_iHour;
+	int m_iMin;
+public:
+	void ShowTime();
+	Time operator + (Time time);
+	Time() { m_iHour = 0; m_iMin = 0; };
+	Time(int Hour, int Min) { m_iHour = Hour; m_iMin = Min; };
+	~Time() {};
+};
+
+Time Time::operator + (Time time)
+{
+	time.m_iHour += this->m_iHour;
+	time.m_iMin += this->m_iMin;
+	return time;
+}
+
+void Time::ShowTime()
+{
+	cout << m_iHour << "\t" << m_iMin;
+}
+
+void main()
+{
+	Time t1(10, 5),t2(2,4);
+	t1 = t1 + t2;
+	t1.ShowTime();
+	t2.ShowTime();
+}
